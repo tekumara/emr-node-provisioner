@@ -1,0 +1,503 @@
+---
+packageBundles:
+  -
+    bundleName: aws-hm-client
+    packages:
+      - aws-hm-client
+  -
+    bundleName: aws-sagemaker-spark-sdk
+    packages:
+      - aws-sagemaker-spark-sdk
+      - python27-numpy
+      - python27-sagemaker_pyspark
+      - python34-numpy
+      - python34-sagemaker_pyspark
+  -
+    bundleName: emr-ddb
+    packages:
+      - emr-ddb
+  -
+    bundleName: emr-goodies
+    packages:
+      - emr-goodies
+  -
+    bundleName: emr-kinesis
+    packages:
+      - emr-kinesis
+  -
+    bundleName: emrfs
+    packages:
+      - bigtop-utils
+      - emrfs
+  -
+    bundleName: hadoop-common
+    packages:
+      - bigtop-utils
+      - cloudwatch-sink
+      - hadoop
+      - hadoop-lzo
+    plugins:
+      -
+        pluginName: hadoop-emr-goodies
+        packageBundles:
+          - emr-goodies
+      -
+        pluginName: hadoop-emrfs
+        packageBundles:
+          - emrfs
+      -
+        pluginName: hadoop-ddb
+        packageBundles:
+          - emr-ddb
+      -
+        pluginName: hadoop-kinesis
+        packageBundles:
+          - emr-goodies
+  -
+    bundleName: hadoop-hdfs-common
+    includedBundles:
+      - hadoop-common
+    packages:
+      - hadoop-hdfs
+  -
+    bundleName: hadoop-mapred-common
+    includedBundles:
+      - hadoop-hdfs-common
+    packages:
+      - hadoop-mapreduce
+  -
+    bundleName: hadoop-yarn-common
+    includedBundles:
+      - hadoop-common
+    packages:
+      - hadoop-yarn
+    plugins:
+      -
+        pluginName: yarn-spark-shuffle
+        packageBundles:
+          - spark-yarn-shuffle
+      -
+        pluginName: yarn-spark-datanucleus
+        packageBundles:
+          - spark-datanucleus
+  -
+    bundleName: hive-common
+    packages:
+      - bigtop-utils
+      - hive
+      - mariadb-connector-java
+    plugins:
+      -
+        pluginName: hive-emr-goodies
+        packageBundles:
+          - emr-goodies
+      -
+        pluginName: hive-ddb
+        packageBundles:
+          - emr-ddb
+      -
+        pluginName: hive-kinesis
+        packageBundles:
+          - emr-kinesis
+  -
+    bundleName: pig-client
+    packages:
+      - bigtop-utils
+      - pig
+    plugins:
+      -
+        pluginName: pig-kinesis
+        packageBundles:
+          - emr-kinesis
+  -
+    bundleName: spark-common
+    packages:
+      - bigtop-utils
+      - hadoop-lzo
+      - spark-core
+    plugins:
+      -
+        pluginName: spark-emrfs
+        packageBundles:
+          - emrfs
+      -
+        pluginName: spark-hive
+        packageBundles:
+          - hive-common
+  -
+    bundleName: spark-client
+    includedBundles:
+      - spark-common
+    packages:
+      - spark-external
+      - spark-python
+      - spark-R
+  -
+    bundleName: spark-history-server
+    includedBundles:
+      - spark-common
+    packages:
+      - spark-history-server
+  -
+    bundleName: spark-datanucleus
+    packages:
+      - spark-datanucleus
+  -
+    bundleName: spark-yarn-shuffle
+    packages:
+      - spark-yarn-shuffle
+  -
+    bundleName: hue
+    packages:
+      - hue-server
+      - hue-useradmin
+      - hue-search
+      - hue-beeswax
+      - hue-spark
+    plugins:
+      -
+        pluginName: hue-with-pig
+        packageBundles:
+          - hue-pig
+  -
+    bundleName: hue-pig
+    packages:
+      - hue-pig
+  -
+    bundleName: augeas
+    packages:
+      - augeas
+      - ruby20-augeas
+
+componentPackages:
+  -
+    componentName: alluxio-master
+    packages:
+      - alluxio
+      - alluxio-master
+  - 
+    componentName: alluxio-worker
+    packages:
+      - alluxio
+      - alluxio-worker
+  -
+    componentName: aws-hm-client
+    packageBundles:
+      - aws-hm-client
+  -
+    componentName: aws-sagemaker-spark-sdk
+    packageBundles:
+      - aws-sagemaker-spark-sdk
+  -
+    componentName: emr-ddb
+    packageBundles:
+      - emr-ddb
+    providedPlugins:
+      - hadoop-ddb
+      - hive-ddb
+  -
+    componentName: emr-goodies
+    packageBundles:
+      - emr-goodies
+    providedPlugins:
+      - hadoop-emr-goodies
+      - hive-emr-goodies
+  -
+    componentName: emr-kinesis
+    packageBundles:
+      - emr-kinesis
+    providedPlugins:
+      - hadoop-kinesis
+      - hive-kinesis
+      - pig-kinesis
+  -
+    componentName: emr-s3-dist-cp
+    packages:
+      - s3-dist-cp
+  -
+    componentName: emrfs
+    packageBundles:
+      - emrfs
+    providedPlugins:
+      - hadoop-emrfs
+      - spark-emrfs
+  -
+    componentName: flink-client
+    packages:
+      - flink
+  -
+    componentName: hadoop-client
+    packageBundles:
+      - hadoop-mapred-common
+    packages:
+      - hadoop-client
+  -
+    componentName: hadoop-hdfs-datanode
+    packageBundles:
+      - hadoop-hdfs-common
+    packages:
+      - hadoop-hdfs-datanode
+  -
+    componentName: hadoop-hdfs-library
+    packages:
+      - hadoop-hdfs
+  -
+    componentName: hbase-hmaster
+    packages:
+      - hbase-master
+  -
+    componentName: hbase-client
+    packages:
+      - hbase
+  -
+    componentName: hbase-region-server
+    packages:
+      - hbase-regionserver
+  -
+    componentName: hbase-rest-server
+    packages:
+      - hbase-rest
+  -
+    componentName: hbase-thrift-server
+    packages:
+      - hbase-thrift
+  -
+    componentName: hcatalog-client
+    packages:
+      - hive-hcatalog
+  -
+    componentName: hcatalog-server
+    packages:
+      - hive-hcatalog-server
+  -
+    componentName: hcatalog-webhcat-server
+    packages:
+      - hive-webhcat-server
+  -
+    componentName: presto-coordinator
+    packages:
+      - presto
+  -
+    componentName: presto-worker
+    packages:
+      - presto
+  -
+    componentName: hadoop-hdfs-namenode
+    packageBundles:
+      - hadoop-hdfs-common
+    packages:
+      - hadoop-hdfs-namenode
+  -
+    componentName: hadoop-hdfs-journalnode
+    packageBundles:
+      - hadoop-hdfs-common
+    packages:
+      - hadoop-hdfs-journalnode
+  -
+    componentName: hadoop-httpfs-server
+    packageBundles:
+      - hadoop-hdfs-common
+    packages:
+      - hadoop-httpfs
+  -
+    componentName: hadoop-kms-server
+    packages:
+      - hadoop-kms
+  -
+    componentName: hadoop-mapred
+    packageBundles:
+      - hadoop-mapred-common
+  -
+    componentName: hadoop-yarn-nodemanager
+    packageBundles:
+      - hadoop-yarn-common
+    packages:
+      - hadoop-yarn-nodemanager
+  -
+    componentName: hadoop-yarn-resourcemanager
+    packageBundles:
+      - hadoop-yarn-common
+      - hadoop-mapred-common
+    packages:
+      - hadoop-mapreduce-historyserver
+      - hadoop-yarn-proxyserver
+      - hadoop-yarn-resourcemanager
+  -
+    componentName: hadoop-yarn-timeline-server
+    packageBundles:
+      - hadoop-yarn-common
+    packages:
+      - hadoop-yarn-timelineserver
+  -
+    componentName: hive-client
+    packageBundles:
+      - hive-common
+    providedPlugins:
+      - spark-hive
+  -
+    componentName: hive-hbase
+    packages:
+      - hive-hbase
+  -
+    componentName: hive-metastore-server
+    packageBundles:
+      - hive-common
+    packages:
+      - hive-metastore
+  -
+    componentName: hive-server2
+    packageBundles:
+      - hive-common
+    packages:
+      - hive-server2
+  -
+    componentName: livy-server
+    packages:
+      - livy
+  -
+    componentName: mahout-client
+    packages:
+      - mahout
+  -
+    componentName: mysql-client
+    packages:
+      - mysql
+  -
+    componentName: mysql-server
+    packages:
+      - mysql-server
+  -
+    componentName: phoenix-library
+    packages:
+      - phoenix
+  -
+    componentName: phoenix-query-server
+    packages:
+      - phoenix-queryserver
+  -
+    componentName: pig-client
+    packageBundles:
+      - pig-client
+    providedPlugins:
+      - hue-with-pig
+  -
+    componentName: spark-client
+    packageBundles:
+      - spark-common
+    packages:
+      - spark-external
+      - spark-python
+      - spark-R
+  -
+    componentName: spark-history-server
+    packageBundles:
+      - spark-common
+    packages:
+      - spark-history-server
+  -
+    componentName: spark-on-yarn
+    packageBundles:
+      - spark-common
+      - spark-datanucleus
+    providedPlugins:
+      - yarn-spark-datanucleus
+  -
+    componentName: spark-thriftserver
+    packageBundles:
+      - spark-common
+      - spark-datanucleus
+    packages:
+      - spark-thriftserver
+  -
+    componentName: spark-yarn-slave
+    packageBundles:
+      - spark-datanucleus
+      - spark-yarn-shuffle
+    providedPlugins:
+      - yarn-spark-shuffle
+  -
+    componentName: zeppelin-server
+    packages:
+      - zeppelin
+  -
+    componentName: oozie-server
+    packages:
+      - oozie
+  -
+    componentName: oozie-client
+    packages:
+      - oozie-client
+  -
+    componentName: hue-server
+    packageBundles:
+      - hue
+  -
+    componentName: ganglia-monitor
+    packages:
+      - ganglia-gmond
+  -
+    componentName: ganglia-metadata-collector
+    packages:
+      - rrdtool
+      - ganglia-gmetad
+  -
+    componentName: ganglia-web
+    packages:
+      - ganglia-web
+  -
+    componentName: r
+    packages:
+      - R
+  -
+    componentName: webserver
+    packages:
+      - httpd24
+  -
+    componentName: sqoop-client
+    packages:
+      - sqoop
+  -
+    componentName: tez-on-yarn
+    packages:
+      - tez
+  -
+    componentName: zookeeper-server
+    packages:
+      - zookeeper-server
+  -
+    componentName: zookeeper-client
+    packages:
+      - zookeeper
+  -
+    componentName: kerberos-server
+    packages:
+      - krb5-server
+      - krb5-libs
+  - 
+    componentName: kerberos-client
+    packages:
+      - krb5-workstation
+  -
+    componentName: kerberos-ad-joiner
+    packageBundles:
+      - augeas
+  -
+    componentName: zeppelin-user
+  -
+    componentName: mxnet
+  -
+    componentName: tensorflow
+  -
+    componentName: jupyterhub
+    packages:
+      - docker
+      - emr-docker-apps
+  -
+    componentName: jupyter-notebook
+    packages:
+      - docker
+      - emr-docker-apps
+  -
+     componentName: opencv
+     packages:
+      - opencv

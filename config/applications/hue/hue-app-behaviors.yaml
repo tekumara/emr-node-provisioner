@@ -1,0 +1,49 @@
+---
+-
+  appName: useradmin
+  hasSeparatePackage: true
+  defaultVisibility: visible
+-
+  appName: jobsub
+  hasSeparatePackage: false
+  defaultVisibility: visible
+-
+  appName: beeswax
+  hasSeparatePackage: true
+  defaultVisibility: removed
+  componentBehaviors:
+    -
+      componentName: hive-server2
+      minimumVisibility: visible
+-
+  appName: hbase
+  hasSeparatePackage: true
+  defaultVisibility: removed
+  componentBehaviors:
+    -
+      componentName: hbase-thrift-server
+      minimumVisibility: visible
+-
+  appName: metastore
+  hasSeparatePackage: false
+  defaultVisibility: removed
+  componentBehaviors:
+    -
+      componentName: hive-server2
+      minimumVisibility: visible
+-
+  appName: pig
+  hasSeparatePackage: true
+  defaultVisibility: removed
+  componentBehaviors:
+    -
+      componentName: pig-client
+      minimumVisibility: visible
+-
+  appName: zookeeper
+  hasSeparatePackage: true
+  defaultVisibility: removed
+  componentBehaviors:
+    -
+      componentName: zookeeper-server
+      minimumVisibility: visible

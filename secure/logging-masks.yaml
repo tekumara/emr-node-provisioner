@@ -1,0 +1,8 @@
+---
+- .*password.*
+- .*access\.key.*
+- .*secret\.key.*
+- .*accesskey.*
+- .*secretkey.*
+- .*ad.domain.join.*
+- .*keystore\.key.*

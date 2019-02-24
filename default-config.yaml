@@ -1,0 +1,217 @@
+---
+bigtop::jdk_preinstalled: true
+bigtop_mysql::server::override_options:
+  mysqld:
+    bind-address: "%{hiera('bigtop_mysql::server::host')}"
+    log-error: '/var/log/mysql/mysqld.log'
+  mysqld_safe:
+    log-error: '/var/log/mysql/mysqld.log'
+hadoop_cluster_node::bigtop_real_users:
+  hadoop
+hadoop::common::hadoop_env_overrides:
+  export:
+    HADOOP_OPTS: '"$HADOOP_OPTS -server -XX:OnOutOfMemoryError=''kill -9 %p''"'
+hadoop::generate_secrets: true
+hadoop::hadoop_lzo_codec: true
+hadoop::common_core::core_site_overrides:
+  ipc.client.connect.max.retries.on.timeouts: '5'
+  hadoop.proxyuser.hue.hosts: '*'
+  hadoop.proxyuser.hue.groups: '*'
+  hadoop.proxyuser.oozie.hosts: '*'
+  hadoop.proxyuser.oozie.groups: '*'
+  hadoop.proxyuser.hive.hosts: '*'
+  hadoop.proxyuser.hive.groups: '*'
+  hadoop.proxyuser.presto.hosts: '*'
+  hadoop.proxyuser.presto.groups: '*'
+  hadoop.security.key.default.bitlength: 256
+hadoop::common_core::hadoop_snappy_codec: true
+hadoop::namenode::should_format_namenode: false
+spark::common::hadoop_lzo_codec: true
+spark::common::spark_defaults_overrides:
+  spark.driver.extraJavaOptions: "-XX:+UseConcMarkSweepGC -XX:CMSInitiatingOccupancyFraction=70 -XX:MaxHeapFreeRatio=70 -XX:+CMSClassUnloadingEnabled -XX:OnOutOfMemoryError='kill -9 %p'"
+  spark.dynamicAllocation.enabled: true
+  spark.blacklist.decommissioning.enabled: true
+  spark.blacklist.decommissioning.timeout: "1h"
+  spark.resourceManager.cleanupExpiredHost: true
+  spark.stage.attempt.ignoreOnDecommissionFetchFailure: true
+  spark.decommissioning.timeout.threshold: 20
+  spark.executor.extraJavaOptions: "-verbose:gc -XX:+PrintGCDetails -XX:+PrintGCDateStamps -XX:+UseConcMarkSweepGC -XX:CMSInitiatingOccupancyFraction=70 -XX:MaxHeapFreeRatio=70 -XX:+CMSClassUnloadingEnabled -XX:OnOutOfMemoryError='kill -9 %p'"
+  spark.hadoop.yarn.timeline-service.enabled: false
+  spark.yarn.appMasterEnv.SPARK_PUBLIC_DNS: "$(hostname -f)"
+  spark.files.fetchFailure.unRegisterOutputOnHost: true
+  spark.hadoop.mapreduce.fileoutputcommitter.algorithm.version.emr_internal_use_only.EmrFileSystem: 2
+  spark.hadoop.mapreduce.fileoutputcommitter.cleanup-failures.ignored.emr_internal_use_only.EmrFileSystem: true
+spark::common::spark_env_overrides:
+  export:
+    SPARK_DAEMON_JAVA_OPTS: '"$SPARK_DAEMON_JAVA_OPTS -XX:OnOutOfMemoryError=''kill -9 %p''"'
+    SPARK_PUBLIC_DNS: "%{hiera('bigtop::hadoop_head_node')}"
+spark::common::hive_site_overrides:
+  hive.metastore.connect.retries: 15
+spark::common::metastore_database_type: 'mariadb'
+hadoop_hbase::base_relative_rootdir: "/user/hbase"
+hadoop_hbase::common_config::hbase_env_overrides:
+  export:
+    HBASE_MANAGES_ZK: 'false' #Puppet in BigTop doesn't use this flag and always launches HBase with external zookeeper. The flag here serves as a guard so in future if puppet gives options to launch HBase managed ZK, we still use external ZK.
+    HBASE_DAEMON_DEFAULT_ROOT_LOGGER: 'INFO,DRFA'
+    HBASE_DAEMON_DEFAULT_SECURITY_LOGGER: 'INFO,DRFAS'
+hadoop_hbase::common_config::hbase_log4j_overrides:
+  hbase.log.maxfilesize: '10MB'
+  hbase.security.log.maxfilesize: '10MB'
+  log4j.appender.DRFA.DatePattern: '.yyyy-MM-dd-HH'
+  log4j.appender.DRFAS: 'org.apache.log4j.DailyRollingFileAppender'
+  log4j.appender.DRFAS.DatePattern: '.yyyy-MM-dd-HH'
+  log4j.appender.DRFAS.File: '${hbase.log.dir}/${hbase.security.log.file}'
+  log4j.appender.DRFAS.layout: 'org.apache.log4j.PatternLayout'
+  log4j.appender.DRFAS.layout.ConversionPattern: '%d{ISO8601} %p %c: %m%n'
+hadoop_zookeeper::common::zookeeper_log4j_overrides:
+  zookeeper.root.logger: INFO,DRFA
+  log4j.appender.DRFA: 'org.apache.log4j.DailyRollingFileAppender'
+  log4j.appender.DRFA.DatePattern: '.yyyy-MM-dd-HH'
+  log4j.appender.DRFA.File: '${zookeeper.log.dir}/${zookeeper.log.file}'
+  log4j.appender.DRFA.layout: 'org.apache.log4j.PatternLayout'
+  log4j.appender.DRFA.layout.ConversionPattern: '%d{ISO8601} %p %c: %m%n'
+hadoop_hbase::common_config::hbase_site_overrides:
+  hbase.rest.port: 8070
+hadoop_hive::common_config::java_tmp_dir: '/mnt/tmp'
+hadoop_hive::common_config::user_log_dir: '/var/log/hive/user'
+hadoop_hive::common_config::hive_site_overrides:
+  datanucleus.fixedDatastore: true
+  mapred.reduce.tasks: -1
+  mapred.max.split.size: 256000000
+  hive.metastore.connect.retries: 15
+  hive.optimize.sort.dynamic.partition: true
+presto::common::http_port: "8889"
+presto::common::https_port: "8446"
+presto::common::presto_env_overrides:
+  export:
+    EXTRA_ARGS: "\"--server http://%{hiera('bigtop::hadoop_head_node')}:%{hiera('presto::common::http_port')}\""
+presto::common::presto_hive_overrides:
+  hive.non-managed-table-writes-enabled: true
+  hive.s3-file-system-type: 'EMRFS'
+  hive.hdfs.impersonation.enabled: true
+presto::common::node_id: "%{hiera('emr::instance_id')}"
+presto::common::hive_s3_staging_dir: '/mnt/tmp'
+hadoop_hive::common_config::hive_env_overrides:
+  export:
+    HIVE_AUX_JARS_PATH: "${HIVE_AUX_JARS_PATH}${HIVE_AUX_JARS_PATH:+:}/usr/lib/hive-hcatalog/share/hcatalog"
+    HADOOP_HEAPSIZE: '1000'
+    USE_HADOOP_SLF4J_BINDING: 'false'
+hadoop_hive::common_config::metastore_database_type: 'mariadb'
+hadoop_pig::client::log_folder_root: '/var/log/pig'
+hadoop_pig::client::pig_overrides:
+  log4jconf: '/etc/pig/conf/log4j.properties'
+  pig.location.check.strict: false
+hadoop::common_yarn::yarn_env_overrides:
+  export:
+    YARN_OPTS: '"$YARN_OPTS -XX:OnOutOfMemoryError=''kill -9 %p''"'
+hadoop::common_yarn::yarn_site_overrides:
+  yarn.log-aggregation-enable: true
+  yarn.log-aggregation.enable-local-cleanup: false
+  yarn.nodemanager.address: ${yarn.nodemanager.hostname}:8041
+  yarn.nodemanager.container-metrics.enable: false
+  yarn.resourcemanager.nodes.exclude-path: '/emr/instance-controller/lib/yarn.nodes.exclude.xml'
+  yarn.scheduler.increment-allocation-mb: '32'
+hadoop::common_yarn::capacity_scheduler_overrides:
+  yarn.scheduler.capacity.maximum-am-resource-percent: 0.5
+
+# Actually set to the default value, but needed for hue::server::webhdfs_url
+hadoop::common_hdfs::hadoop_namenode_http_port: '50070'
+
+hadoop::common_hdfs::hdfs_site_overrides:
+  dfs.hosts.exclude: '/emr/instance-controller/lib/dfs.hosts.exclude'
+  dfs.namenode.safemode.extension: '5000'
+  dfs.namenode.replication.max-streams: 20
+  dfs.namenode.replication.max-streams-hard-limit: 40
+  dfs.namenode.replication.work.multiplier.per.iteration: 10
+hadoop::common_mapred_app::mapreduce_framework_name: 'yarn'
+hadoop::common_mapred_app::mapred_site_overrides:
+  mapreduce.map.output.compress.codec: org.apache.hadoop.io.compress.SnappyCodec
+  mapred.output.direct.EmrFileSystem: true
+  mapred.output.direct.NativeS3FileSystem: true
+hadoop::common_mapred_app::yarn_app_mapreduce_am_jhs_backup_dir: '/var/log/hadoop-mapreduce/history'
+hadoop::common::hadoop_metrics2_overrides:
+  '*.sink.cloudwatch.metricsList': TotalLoad,CapacityTotalGB,UnderReplicatedBlocks,CapacityRemainingGB,PendingDeletionBlocks,PendingReplicationBlocks,CorruptBlocks,CapacityUsedGB,NumLiveDataNodes,NumDeadDataNodes,MissingBlocks
+  '*.period': '300'
+  namenode.sink.cloudwatch.class: com.amazon.ws.emr.hadoop.metrics2.sink.cloudwatch.CloudWatchSink
+  datanode.sink.cloudwatch.class: com.amazon.ws.emr.hadoop.metrics2.sink.cloudwatch.CloudWatchSink
+  resourcemanager.sink.cloudwatch.class: com.amazon.ws.emr.hadoop.metrics2.sink.cloudwatch.CloudWatchSink
+  nodemanager.sink.cloudwatch.class: com.amazon.ws.emr.hadoop.metrics2.sink.cloudwatch.CloudWatchSink
+  mrappmaster.sink.cloudwatch.class: com.amazon.ws.emr.hadoop.metrics2.sink.cloudwatch.CloudWatchSink
+  jobhistoryserver.sink.cloudwatch.class: com.amazon.ws.emr.hadoop.metrics2.sink.cloudwatch.CloudWatchSink
+  maptask.sink.cloudwatch.class: com.amazon.ws.emr.hadoop.metrics2.sink.cloudwatch.CloudWatchSink
+  reducetask.sink.cloudwatch.class: com.amazon.ws.emr.hadoop.metrics2.sink.cloudwatch.CloudWatchSink
+
+hadoop::kms::hadoop_kms_http_port: "9700"
+hadoop::kms::hadoop_kms_admin_port: "9701"
+hadoop::kms::kms_site_overrides:
+  hadoop.kms.proxyuser.hdfs.hosts: '*'
+  hadoop.kms.proxyuser.hdfs.groups: '*'
+  hadoop.kms.proxyuser.hdfs.users: '*'
+
+hue::server::webhdfs_url: "http://%{fqdn}:%{hiera('hadoop::common_hdfs::hadoop_namenode_http_port')}/webhdfs/v1"
+hue::server::generate_secrets: true
+hue::server::generate_secret_key_options:
+  length: 60
+  charset: alphanumeric
+hue::server::hue_ini_overrides:
+  beeswax:
+    use_get_log_api: false
+  useradmin:
+    password_policy:
+      is_enabled: true
+  desktop:
+    collect_usage: false
+  jobbrowser:
+    sensitive_job_metadata:
+      - fs.s3.awsAccessKeyId
+      - fs.s3.awsSecretAccessKey
+      - fs.s3n.awsAccessKeyId
+      - fs.s3n.awsSecretAccessKey
+      - fs.s3bfs.awsAccessKeyId
+      - fs.s3bfs.awsSecretAccessKey
+hadoop_oozie::server::include_mysql_jdbc: true
+hadoop_oozie::server::include_mariadb_jdbc: true
+hadoop_oozie::server::hadoop_lzo_codec: true
+hadoop_oozie::server::init_sharelib_tries: 540
+hadoop_oozie::server::init_sharelib_try_sleep: 5
+hadoop_oozie::server::init_sharelib_timeout: 2700
+hadoop_oozie::server::symlink_emrfs_jars: true
+hadoop_oozie::server::oozie_site_overrides:
+  oozie.service.HadoopAccessorService.supported.filesystems: hdfs,s3,s3n
+hadoop::init_hdfs::dirs:
+  /tmp:
+    perms: 1777
+  /user:
+    perms: 755
+    owner: hdfs
+  /user/hadoop:
+    perms: 777
+    owner: hadoop
+  /user/root:
+    perms: 777
+    owner: root
+zeppelin::server::hadoop_lzo_codec: true
+zeppelin::server::server_port: 8890
+zeppelin::server::zeppelin_env_overrides:
+  export:
+    SPARK_SUBMIT_OPTIONS: "\"$SPARK_SUBMIT_OPTIONS --conf 'spark.executorEnv.PYTHONPATH=/usr/lib/spark/python/lib/py4j-src.zip:/usr/lib/spark/python/:<CPS>{{PWD}}/pyspark.zip<CPS>{{PWD}}/py4j-src.zip' --conf spark.yarn.isPython=true\""
+ganglia::grid_name: 'EMR'
+ganglia::cluster_name: "%{hiera('emr::cluster_id')}"
+ganglia::host_location: 'EC2'
+ganglia::monitor::is_deaf: true
+ganglia::monitor::host_dmax: '640'
+ganglia::web::default_optional_graph_size: 'xlarge'
+ganglia::web::auth_system: 'disabled'
+ganglia::metadata_collector::use_old_default_rra: true
+mahout::client::hadoop_lzo_codec: true
+tez::client::tez_site_overrides:
+  tez.am.grouping.max-size: 134217728
+  tez.runtime.intermediate-output.should-compress: true
+  tez.runtime.intermediate-input.is-compressed: true
+  tez.runtime.intermediate-output.compress.codec: org.apache.hadoop.io.compress.LzoCodec
+  tez.runtime.intermediate-input.compress.codec: org.apache.hadoop.io.compress.LzoCodec
+  tez.use.cluster.hadoop-libs: true
+  tez.history.logging.service.class: org.apache.tez.dag.history.logging.ats.ATSHistoryLoggingService
+  tez.tez-ui.history-url.base: "http://%{hiera('bigtop::hadoop_head_node')}:8080/tez-ui/"
+tez::client::tez_tarball_path: 'hdfs:///apps/tez/tez.tar.gz'
+hcatalog::webhcat::common::generate_secrets: true

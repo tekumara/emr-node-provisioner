@@ -1,0 +1,10 @@
+---
+hadoop_hbase::common_config::hbase_site_overrides:
+  hbase.balancer.tablesOnMaster: "hbase:meta"
+  hbase.bucketcache.size: 8192
+  hbase.master.balancer.uselocality: false
+  hbase.master.startup.retainassign: false
+  hbase.wal.dir: "%{hiera('bigtop::hadoop_namenode_uri')}%{hiera('hadoop_hbase::base_relative_rootdir')}/WAL"
+  hbase.bulkload.retries.retryOnIOException: true
+emrfs::library::emrfs_site_overrides:
+  fs.s3.maxConnections: 10000

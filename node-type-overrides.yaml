@@ -1,0 +1,5 @@
+---
+-
+  nodeType: master
+  config:
+    hadoop::namenode::should_format_namenode: true

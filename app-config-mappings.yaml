@@ -1,0 +1,409 @@
+---
+-
+  mappingType: config-override
+  mappings:
+    -
+      sourcePath: alluxio-env
+      destinationPath: alluxio::common::alluxio_env_overrides
+    -
+      sourcePath: alluxio-log4j
+      destinationPath: alluxio::common::alluxio_log4j_overrides
+    -
+      sourcePath: alluxio-site
+      destinationPath: alluxio::common::alluxio_site_overrides
+    -
+      sourcePath: core-site
+      destinationPath: hadoop::common_core::core_site_overrides
+    -
+      sourcePath: emrfs-site
+      destinationPath: emrfs::library::emrfs_site_overrides
+    -
+      sourcePath: emrfs-annotations
+      destinationPath: emrfs::library::emrfs_annotations_overrides
+    -
+      sourcePath: flink-conf
+      destinationPath: flink::client::flink_conf_overrides
+    -
+      sourcePath: flink-log4j
+      destinationPath: flink::client::flink_log4j_overrides
+    -
+      sourcePath: flink-log4j-yarn-session
+      destinationPath: flink::client::flink_log4j_yarn_session_overrides
+    -
+      sourcePath: flink-log4j-cli
+      destinationPath: flink::client::flink_log4j_cli_overrides
+    -
+      sourcePath: hadoop-env
+      destinationPath: hadoop::common::hadoop_env_overrides
+    -
+      sourcePath: hadoop-ssl-server
+      destinationPath: hadoop::common_core::hadoop_ssl_server_overrides
+    -
+      sourcePath: hadoop-ssl-client
+      destinationPath: hadoop::common_core::hadoop_ssl_client_overrides
+    -
+      sourcePath: hadoop-log4j
+      destinationPath: hadoop::common::hadoop_log4j_overrides
+    -
+      sourcePath: hadoop-metrics
+      destinationPath: hadoop::common::hadoop_metrics2_overrides
+    -
+      sourcePath: hdfs-site
+      destinationPath: hadoop::common_hdfs::hdfs_site_overrides
+    -
+      sourcePath: httpfs-env
+      destinationPath: hadoop::httpfs::httpfs_env_overrides
+    -
+      sourcePath: httpfs-site
+      destinationPath: hadoop::httpfs::httpfs_site_overrides
+    -
+      sourcePath: hadoop-kms-acls
+      destinationPath: hadoop::kms::kms_acls_overrides
+    -
+      sourcePath: hadoop-kms-env
+      destinationPath: hadoop::kms::kms_env_overrides
+    -
+      sourcePath: hadoop-kms-log4j
+      destinationPath: hadoop::kms::kms_log4j_overrides
+    -
+      sourcePath: hadoop-kms-site
+      destinationPath: hadoop::kms::kms_site_overrides
+    -
+      sourcePath: jupyter-notebook-conf
+      destinationPath: jupyter::common::notebook_config_overrides
+    -
+      sourcePath: jupyter-hub-conf
+      destinationPath: jupyter::hub::jupyterhub_config_overrides
+    - 
+      sourcePath: jupyter-sparkmagic-conf
+      destinationPath: jupyter::common::jupyter_sparkmagic_overrides
+    -
+      sourcePath: mapred-env
+      destinationPath: hadoop::common_mapred_app::mapred_env_overrides
+    -
+      sourcePath: mapred-site
+      destinationPath: hadoop::common_mapred_app::mapred_site_overrides
+    -
+      sourcePath: yarn-env
+      destinationPath: hadoop::common_yarn::yarn_env_overrides
+    -
+      sourcePath: capacity-scheduler
+      destinationPath: hadoop::common_yarn::capacity_scheduler_overrides
+    -
+      sourcePath: container-log4j
+      destinationPath: hadoop::common_yarn::container_log4j_overrides
+    -
+      sourcePath: yarn-site
+      destinationPath: hadoop::common_yarn::yarn_site_overrides
+    -
+      sourcePath: oozie-site
+      destinationPath: hadoop_oozie::server::oozie_site_overrides
+    -
+      sourcePath: hbase-env
+      destinationPath: hadoop_hbase::common_config::hbase_env_overrides
+    -
+      sourcePath: hbase-log4j
+      destinationPath: hadoop_hbase::common_config::hbase_log4j_overrides
+    -
+      sourcePath: hbase-site
+      destinationPath: hadoop_hbase::common_config::hbase_site_overrides
+    -
+      sourcePath: hbase
+      destinationPath: hadoop_hbase::common_config::hbase_overrides
+    -
+      sourcePath: hbase-metrics
+      destinationPath: hadoop_hbase::common_config::hbase_metrics_overrides
+    -
+      sourcePath: hbase-policy
+      destinationPath: hadoop_hbase::common_config::hbase_policy_overrides
+    -
+      sourcePath: hcatalog-env
+      destinationPath: hcatalog::common::hcatalog_env_overrides
+    -
+      sourcePath: hcatalog-server-jndi
+      destinationPath: hcatalog::common::hcatalog_jndi_overrides
+    -
+      sourcePath: hcatalog-server-proto-hive-site
+      destinationPath: hcatalog::common::hcatalog_proto_hive_site_overrides
+    -
+      sourcePath: hcatalog-webhcat-env
+      destinationPath: hcatalog::webhcat::common::webhcat_env_overrides
+    -
+      sourcePath: hcatalog-webhcat-log4j
+      destinationPath: hcatalog::webhcat::common::webhcat_log4j_overrides
+    -
+      sourcePath: hcatalog-webhcat-log4j2
+      destinationPath: hcatalog::webhcat::common::webhcat_log4j2_overrides
+    -
+      sourcePath: hcatalog-webhcat-site
+      destinationPath: hcatalog::webhcat::common::webhcat_site_overrides
+    -
+      sourcePath: hive-env
+      destinationPath: hadoop_hive::common_config::hive_env_overrides
+    -
+      sourcePath: hive-beeline-log4j2
+      destinationPath: hadoop_hive::common_config::hive_beeline_log4j2_overrides
+    -
+      sourcePath: hive-parquet-logging
+      destinationPath: hadoop_hive::common_config::hive_parquet_logging_overrides
+    -
+      sourcePath: hive-log4j
+      destinationPath: hadoop_hive::common_config::hive_log4j_overrides
+    -
+      sourcePath: hive-log4j2
+      destinationPath: hadoop_hive::common_config::hive_log4j2_overrides
+    -
+      sourcePath: hive-exec-log4j
+      destinationPath: hadoop_hive::common_config::hive_exec_log4j_overrides
+    -
+      sourcePath: hive-exec-log4j2
+      destinationPath: hadoop_hive::common_config::hive_exec_log4j2_overrides
+    -
+      sourcePath: hive-llap-daemon-log4j2
+      destinationPath: hadoop_hive::common_config::hive_llap_daemon_log4j2_overrides
+    -
+      sourcePath: hive-site
+      destinationPath: hadoop_hive::common_config::hive_site_overrides
+    -
+      sourcePath: hiveserver2-site
+      destinationPath: hadoop_hive::common_config::hiveserver2_site_overrides
+    -
+      sourcePath: hue-ini
+      destinationPath: hue::server::hue_ini_overrides
+    -
+      sourcePath: livy-env
+      destinationPath: livy::common::livy_env_overrides
+    -
+      sourcePath: livy-conf
+      destinationPath: livy::common::livy_conf_overrides
+    -
+      sourcePath: livy-log4j
+      destinationPath: livy::common::livy_log4j_overrides
+    -
+      sourcePath: oozie-site
+      destinationPath: hadoop_oozie::server::oozie_site_overrides
+    -
+      sourcePath: oozie-log4j
+      destinationPath: hadoop_oozie::server::oozie_log4j_overrides
+    -
+      sourcePath: oozie-env
+      destinationPath: hadoop_oozie::server::oozie_env_overrides
+    -
+      sourcePath: phoenix-hbase-metrics
+      destinationPath: phoenix::common::phoenix_hbase_metrics_overrides
+    -
+      sourcePath: phoenix-hbase-site
+      destinationPath: phoenix::common::phoenix_hbase_site_overrides
+    -
+      sourcePath: phoenix-log4j
+      destinationPath: phoenix::common::phoenix_log4j_overrides
+    -
+      sourcePath: phoenix-metrics
+      destinationPath: phoenix::common::phoenix_metrics_overrides
+    -
+      sourcePath: pig-env
+      destinationPath: hadoop_pig::client::pig_env_overrides
+    -
+      sourcePath: pig-properties
+      destinationPath: hadoop_pig::client::pig_overrides
+    -
+      sourcePath: pig-log4j
+      destinationPath: hadoop_pig::client::pig_log4j_overrides
+    -
+      sourcePath: presto-config
+      destinationPath: presto::common::presto_config_overrides
+    -
+      sourcePath: presto-password-authenticator
+      destinationPath: presto::common::presto_password_auth_overrides
+    -
+      sourcePath: presto-log
+      destinationPath: presto::common::presto_log_overrides
+    -
+      sourcePath: presto-connector-hive
+      destinationPath: presto::common::presto_hive_overrides
+    -
+      sourcePath: presto-connector-mysql
+      destinationPath: presto::common::presto_mysql_overrides
+    -
+      sourcePath: presto-connector-postgresql
+      destinationPath: presto::common::presto_postgresql_overrides
+    -
+      sourcePath: presto-connector-blackhole
+      destinationPath: presto::common::presto_blackhole_overrides
+    -
+      sourcePath: presto-connector-cassandra
+      destinationPath: presto::common::presto_cassandra_overrides
+    -
+      sourcePath: presto-connector-jmx
+      destinationPath: presto::common::presto_jmx_overrides
+    -
+      sourcePath: presto-connector-kafka
+      destinationPath: presto::common::presto_kafka_overrides
+    -
+      sourcePath: presto-connector-localfile
+      destinationPath: presto::common::presto_localfile_overrides
+    -
+      sourcePath: presto-connector-mongodb
+      destinationPath: presto::common::presto_mongodb_overrides
+    -
+      sourcePath: presto-connector-raptor
+      destinationPath: presto::common::presto_raptor_overrides
+    -
+      sourcePath: presto-connector-redis
+      destinationPath: presto::common::presto_redis_overrides
+    -
+      sourcePath: presto-connector-redshift
+      destinationPath: presto::common::presto_redshift_overrides
+    -
+      sourcePath: presto-connector-tpch
+      destinationPath: presto::common::presto_tpch_overrides
+    -
+      sourcePath: presto-env
+      destinationPath: presto::common::presto_env_overrides
+    -
+      sourcePath: presto-node
+      destinationPath: presto::common::presto_node_overrides
+    -
+      sourcePath: spark-defaults
+      destinationPath: spark::common::spark_defaults_overrides
+    -
+      sourcePath: spark-env
+      destinationPath: spark::common::spark_env_overrides
+    -
+      sourcePath: spark-hive-site
+      destinationPath: spark::common::hive_site_overrides
+    -
+      sourcePath: spark-log4j
+      destinationPath: spark::common::spark_log4j_overrides
+    -
+      sourcePath: spark-metrics
+      destinationPath: spark::common::spark_metrics_overrides
+    -
+      sourcePath: sqoop-env
+      destinationPath: sqoop::client::sqoop_env_overrides
+    -
+      sourcePath: sqoop-oraoop-site
+      destinationPath: sqoop::client::sqoop_oraoop_site_overrides
+    -
+      sourcePath: sqoop-site
+      destinationPath: sqoop::client::sqoop_site_overrides
+    -
+      sourcePath: tez-site
+      destinationPath: tez::client::tez_site_overrides
+    -
+      sourcePath: zeppelin-env
+      destinationPath: zeppelin::server::zeppelin_env_overrides
+    -
+      sourcePath: zookeeper-config
+      destinationPath: hadoop_zookeeper::server::zookeeper_config_overrides
+    -
+      sourcePath: zookeeper-log4j
+      destinationPath: hadoop_zookeeper::common::zookeeper_log4j_overrides
+-
+  mappingType: comma-delimited-list
+  mappings:
+    -
+      sourcePath: [hdfs-site, dfs.data.dir]
+      destinationPath: hadoop::common_hdfs::hdfs_data_dirs
+    -
+      sourcePath: [hdfs-site, dfs.name.dir]
+      destinationPath: hadoop::common_hdfs::namenode_data_dirs
+    -
+      sourcePath: [yarn-site, yarn.nodemanager.local-dirs]
+      destinationPath: hadoop::common_yarn::yarn_data_dirs
+    -
+      sourcePath: [mapred-site, mapred.local.dir]
+      destinationPath: hadoop::common_mapred_app::mapred_data_dirs
+    -
+      sourcePath: [core-site, fs.s3.buffer.dir]
+      destinationPath: hadoop::common_core::s3_buffer_dirs
+-
+  mappingType: string
+  mappings:
+    -
+      sourcePath: [hdfs-site, dfs.namenode.shared.edits.dir]
+      destinationPath: hadoop::common_hdfs::journalnode_edits_dir
+    -
+      sourcePath: [emrfs-site, fs.s3.cse.encryptionMaterialsProvider.uri]
+      destinationPath: emrfs::library::cse_provider_s3_path
+    -
+      sourcePath: [kerberos, realm]
+      destinationPath: kerberos::site::realm
+    -
+      sourcePath: [kerberos, admin.password]
+      destinationPath: kerberos::site::admin_password
+    -
+      sourcePath: [kerberos, cross.realm.trust.domain]
+      destinationPath: kerberos::site::cross_realm_trust_domain
+    -
+      sourcePath: [kerberos, cross.realm.trust.realm]
+      destinationPath: kerberos::site::cross_realm_trust_realm
+    -
+      sourcePath: [kerberos, cross.realm.trust.kdc.server]
+      destinationPath: kerberos::site::cross_realm_trust_kdc_server
+    -
+      sourcePath: [kerberos, cross.realm.trust.admin.server]
+      destinationPath: kerberos::site::cross_realm_trust_admin_server
+    -
+      sourcePath: [kerberos, cross.realm.trust.principal.password]
+      destinationPath: kerberos::site::cross_realm_trust_principal_password
+    -
+      sourcePath: [kerberos, ticket.lifetime.in.hours]
+      destinationPath: kerberos::site::ticket_lifetime
+    -
+      sourcePath: [kerberos, ad.domain.join.user]
+      destinationPath: kerberos::ad_joiner::ad_domain_join_user
+    -
+      sourcePath: [kerberos, ad.domain.join.password]
+      destinationPath: kerberos::ad_joiner::ad_domain_join_password
+    -
+      sourcePath: [kerberos, principal.creation.timeout]
+      destinationPath:  kerberos::site::principal_creation_timeout
+    -
+      sourcePath: [kerberos, log.dir]
+      destinationPath: kerberos::site::log_dir
+    -
+      sourcePath: [kerberos, ssh.username]
+      destinationPath: kerberos::site::ssh_username
+    - 
+      sourcePath: [core-site, hadoop.security.authentication]
+      destinationPath: hadoop::hadoop_security_authentication
+    -             
+      sourcePath: [container-executor, banned.users]
+      destinationPath: hadoop::common_yarn::container_executor_banned_users
+    - 
+      sourcePath: [container-executor, min.user.id]
+      destinationPath: hadoop::common_yarn::container_executor_min_user_id
+    - 
+      sourcePath: [container-executor, allowed.system.users]
+      destinationPath: hadoop::common_yarn::container_executor_allowed_system_users
+    -
+      sourcePath: [jupyter-s3-conf, s3.persistence.enabled]
+      destinationPath: jupyter::common::use_s3_persistence
+    -
+      sourcePath: [jupyter-s3-conf, s3.persistence.bucket]
+      destinationPath: jupyter::common::s3_persistence_bucket
+    -
+      sourcePath: [presto-password-authenticator, internal-communication.authentication.ldap.user]
+      destinationPath: presto::common::presto_ldap_user
+    -
+      sourcePath: [presto-password-authenticator, internal-communication.authentication.ldap.password]
+      destinationPath: presto::common::presto_ldap_password
+-
+  mappingType: dns-reverse-lookup
+  mappings:
+    -
+      sourcePath: [yarn-site, yarn.resourcemanager.hostname]
+      destinationPath: bigtop::hadoop_head_node
+-
+  mappingType: boolean
+  mappings:
+    -
+      sourcePath: [kerberos, cross.realm.trust.enabled]
+      destinationPath: kerberos::site::cross_realm_trust_enabled
+-
+  mappingType: static-base-path
+  mappings:
+    -
+      sourcePath: [core-site, hadoop.tmp.dir]
+      destinationPath: hadoop::common_core::hadoop_base_tmp_dir

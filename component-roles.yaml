@@ -1,0 +1,49 @@
+---
+-
+  componentName: emr-s3-dist-cp
+  roleName: s3-dist-cp
+-
+  componentName: hadoop-hdfs-datanode
+  roleName: datanode
+-
+  componentName: hadoop-hdfs-journalnode
+  roleName: journalnode
+-
+  componentName: hadoop-hdfs-library
+  roleName: hdfs-library
+-
+  componentName: hadoop-hdfs-namenode
+  roleName: namenode
+-
+  componentName: hadoop-mapred
+  roleName: mapred-app
+-
+  componentName: hadoop-yarn-nodemanager
+  roleName: nodemanager
+-
+  componentName: hadoop-yarn-resourcemanager
+  roleName: resourcemanager
+-
+  componentName: hadoop-yarn-timeline-server
+  roleName: timelineserver
+-
+  componentName: hbase-hmaster
+  roleName: hbase-master
+-
+  componentName: hbase-region-server
+  roleName: hbase-server
+-
+  componentName: hcatalog-webhcat-server
+  roleName: webhcat-server
+-
+  componentName: presto-coordinator
+  roleName: presto-coordinator
+-
+  componentName: presto-worker
+  roleName: presto-worker
+-
+  componentName: hadoop-httpfs-server
+  roleName: httpfs-server
+-
+  componentName: hadoop-kms-server
+  roleName: kms-server

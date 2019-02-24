@@ -1,0 +1,346 @@
+---
+-
+  componentName: aws-hm-client
+  config:
+    spark::common::use_aws_hm_client: true
+    hadoop_hive::common_config::use_aws_hm_client: true
+    zeppelin::server::use_aws_hm_client: true
+-
+  componentName: aws-sagemaker-spark-sdk
+  config:
+    spark::common::use_aws_sagemaker_spark_sdk: true
+    zeppelin::server::use_aws_sagemaker_spark_sdk: true
+-
+  componentName: alluxio-master
+  config:
+    hadoop::common::use_alluxio: true
+    spark::common::use_alluxio: true
+-
+  componentName: alluxio-worker
+  config:
+    hadoop::common::use_alluxio: true
+    spark::common::use_alluxio: true
+-
+  componentName: emrfs
+  config:
+    hadoop::use_emrfs: true
+    mahout::client::use_emrfs: true
+    spark::common::use_emrfs: true
+    zeppelin::server::use_emrfs: true
+-
+  componentName: emr-ddb
+  config:
+    hadoop::use_dynamodb: true
+    hadoop_hive::common_config::use_dynamodb: true
+-
+  componentName: emr-kinesis
+  config:
+    hadoop::use_kinesis: true
+    hadoop_hive::common_config::use_kinesis: true
+    hadoop_pig::client::use_kinesis: true
+-
+  componentName: emr-goodies
+  config:
+    hadoop::use_emr_goodies: true
+    hadoop_hive::common_config::use_emr_goodies: true
+-
+  componentName: hadoop-mapred
+  config:
+    hadoop::common_yarn::use_mapreduce_shuffle: true
+    hadoop::init_hdfs::dirs:
+      /var/log:
+        perms: 1775
+        owner: yarn
+        group: mapred
+      /tmp/hadoop-yarn:
+        perms: 777
+        owner: mapred
+        group: mapred
+      /tmp/hadoop-yarn/staging:
+        perms: 1777
+        owner: mapred
+        group: mapred
+      /tmp/hadoop-yarn/staging/history:
+        perms: 1777
+        owner: mapred
+        group: mapred
+      /user/history:
+        perms: 755
+        owner: mapred
+        group: mapred
+-
+  componentName: hadoop-yarn-resourcemanager
+  config:
+    hadoop::init_hdfs::dirs:
+      /var/log/hadoop-yarn/apps:
+        perms: 1777
+        owner: yarn
+        group: hadoop
+    hadoop::common_yarn::yarn_site_overrides:
+      yarn.resourcemanager.system-metrics-publisher.enabled: true
+-
+  componentName: hadoop-yarn-timeline-server
+  config:
+    hadoop::common_yarn::yarn_site_overrides:
+      yarn.timeline-service.http-cross-origin.enabled: true
+      yarn.timeline-service.hostname: "%{hiera('bigtop::hadoop_head_node')}"
+-
+  componentName: hbase-hmaster
+  config:
+    hadoop::init_hdfs::dirs:
+      /user/hbase:
+        perms: 775
+        owner: hbase
+        group: hbase
+    hadoop_zookeeper::server::zookeeper_config_overrides:
+      maxClientCnxns: 0
+-
+  componentMatcher:
+      matchType: any
+      componentNames:
+        - hbase-hmaster
+        - hbase-region-server
+  config:
+    hadoop::common_yarn::use_hbase_conf: true
+-
+  componentName: hue-server
+  config:
+    hadoop::init_hdfs::dirs:
+      /user/hue:
+        perms: 777
+        owner: hue
+        group: hue
+    hadoop_hive::common_config::hive_site_overrides:
+      hive.async.log.enabled: false
+-
+  componentMatcher:
+    matchType: all
+    componentNames:
+      - hue-server
+      - mysql-server
+  config:
+    bigtop::hue_database_user: hue
+    bigtop::hue_database_name: huedb
+    bigtop::hue_database_charset: utf8
+    bigtop::hue_database_collation: utf8_bin
+    bigtop::hue_test_database_name: test_huedb
+    hue::server::hue_ini_overrides:
+      desktop:
+        database:
+          engine: mysql
+          host: "%{hiera('bigtop_mysql::server::host')}"
+          port: "%{hiera('bigtop_mysql::server::port')}"
+          name: "%{hiera('bigtop::hue_database_name')}"
+          user: "%{hiera('bigtop::hue_database_user')}"
+          password: "%{hiera('generated::hue_user::password')}"
+          test_name: "%{hiera('bigtop::hue_test_database_name')}"
+          test_charset: "%{hiera('bigtop::hue_database_charset')}"
+          test_collation: "%{hiera('bigtop::hue_database_collation')}"
+          case_insensitive_collation: utf8_unicode_ci
+    bigtop_mysql::server::databases:
+      "%{hiera('bigtop::hue_database_name')}":
+        charset: "%{hiera('bigtop::hue_database_charset')}"
+        collate: "%{hiera('bigtop::hue_database_collation')}"
+    bigtop_mysql::server::users:
+      "%{hiera('bigtop::hue_database_user')}@%":
+        password_hash: "%{hiera('generated::hue_user::password_hash')}"
+    bigtop_mysql::server::grants:
+      "%{hiera('bigtop::hue_database_user')}@%/%{hiera('bigtop::hue_database_name')}.*":
+        privileges:
+         - ALL
+        table: "%{hiera('bigtop::hue_database_name')}.*"
+        user: "%{hiera('bigtop::hue_database_user')}@%"
+      "%{hiera('bigtop::hue_database_user')}@%/%{hiera('bigtop::hue_test_database_name')}.*":
+        privileges:
+         - ALL
+        table: "%{hiera('bigtop::hue_test_database_name')}.*"
+        user: "%{hiera('bigtop::hue_database_user')}@%"
+-
+  componentName: mahout-client
+  config:
+    spark::common::use_mahout: true
+-
+  componentName: livy-server
+  config:
+    hadoop::init_hdfs::dirs:
+      /user/livy:
+        perms: 777
+        owner: livy
+        group: livy
+-
+  componentName: oozie-server
+  config:
+    hadoop::init_hdfs::dirs:
+      /user/oozie:
+        perms: 777
+        owner: oozie
+        group: oozie
+-
+  componentMatcher:
+    matchType: all
+    componentNames:
+      - spark-on-yarn
+      - oozie-server
+  config:
+    hadoop_oozie::server::spark_master_url: 'yarn-cluster'
+-
+  componentMatcher:
+    matchType: all
+    componentNames:
+      - phoenix-library
+      - hbase-region-server
+  config:
+    hadoop_hbase::common_config::hbase_site_overrides:
+      # enable secondary indexing https://phoenix.apache.org/secondary_indexing.html#Setup
+      hbase.regionserver.wal.codec: org.apache.hadoop.hbase.regionserver.wal.IndexedWALEditCodec
+      hbase.region.server.rpc.scheduler.factory.class: org.apache.hadoop.hbase.ipc.PhoenixRpcSchedulerFactory
+      hbase.rpc.controllerfactory.class: org.apache.hadoop.hbase.ipc.controller.ServerRpcControllerFactory
+-
+  componentName: phoenix-library
+  config:
+    hadoop_hbase::common_config::hbase_env_overrides:
+      export:
+        HBASE_CLASSPATH: "${HBASE_CLASSPATH}${HBASE_CLASSPATH:+:}$(ls -1 /usr/lib/phoenix/phoenix-*-HBase-*-server.jar)"
+-
+  componentName: phoenix-query-server
+  config:
+    hadoop_hbase::common_config::use_phoenix_query_server: true
+-
+  componentName: pig-client
+  config:
+    hadoop_oozie::server::use_pig: true
+    hadoop_oozie::server::symlink_pig_conf: true
+-
+  componentName: presto-coordinator
+  config:
+    emrfs::library::emrfs_site_overrides:
+      fs.s3.maxConnections: 500
+    hue::server::hue_ini_overrides:
+      notebook:
+        interpreters_shown_on_wheel: presto
+        dbproxy_extra_classpath: "/usr/lib/presto/presto-jdbc/*"
+        interpreters:
+          presto:
+            name: 'Presto'
+            interface: 'jdbc'
+            options: '{"url": "jdbc:presto://%{hiera(''bigtop::hadoop_head_node'')}:8889/hive/default", "driver": "com.facebook.presto.jdbc.PrestoDriver", "user":"root","password":""}'
+-
+  componentName: spark-client
+  config:
+    hadoop::init_hdfs::dirs:
+      /user/spark:
+        perms: 777
+        owner: spark
+        group: spark
+    mahout::client::use_spark: true
+    hadoop_oozie::server::use_spark: true
+-
+  componentName: spark-on-yarn
+  config:
+    hadoop::common_yarn::use_spark_datanucleus: true
+    spark::common::use_yarn_shuffle_service: true
+    hadoop::init_hdfs::dirs:
+      /user/spark/warehouse:
+        perms: 1777
+      /var/log/spark/apps:
+        perms: 1777
+        owner: spark
+        group: spark
+-
+  componentName: spark-thriftserver
+  config:
+    hadoop::init_hdfs::dirs:
+      /user/hive:
+        perms: 777
+      /user/hive/warehouse:
+        perms: 1777
+-
+  componentName: spark-yarn-slave
+  config:
+    hadoop::common_yarn::use_spark_shuffle: true
+-
+  componentName: tez-on-yarn
+  config:
+    hadoop::common::use_tez: true
+    hadoop::common::tez_conf_dir: /etc/tez/conf
+    hadoop::common::tez_jars: /usr/lib/tez
+    hadoop::init_hdfs::dirs:
+      /apps/tez:
+        perms: 777
+        owner: yarn
+        group: hadoop
+    hadoop_oozie::server::symlink_tez_conf: true
+-
+  componentMatcher:
+    matchType: any
+    componentNames:
+      - hive-client
+      - hive-server2
+      - hive-metastore-server
+  config:
+    hadoop_hive::common_config::metastore_database_password: "%{hiera('generated::hive_metastore_user::password')}"
+    hadoop::init_hdfs::dirs:
+      /user/hive:
+        perms: 777
+      /user/hive/warehouse:
+        perms: 1777
+    bigtop_mysql::server::users:
+      "%{hiera('hadoop_hive::common_config::metastore_database_user')}@%":
+        password_hash: "%{hiera('generated::hive_metastore_user::password_hash')}"
+    bigtop_mysql::server::grants:
+      "%{hiera('hadoop_hive::common_config::metastore_database_user')}@%/*.*":
+        options:
+         - GRANT
+        privileges:
+         - ALL
+        table: '*.*'
+        user: "%{hiera('hadoop_hive::common_config::metastore_database_user')}@%"
+    hadoop_oozie::server::symlink_hive_conf: true
+    hadoop_oozie::server::use_hive: true
+    hue::server::hue_ini_overrides:
+      metastore:
+        force_hs2_metadata: true
+    mahout::client::use_hive: true
+    spark::common::use_hive: true
+    zeppelin::server::use_hive: true
+-
+  componentName: zeppelin-server
+  config:
+    hadoop::init_hdfs::dirs:
+      /user/zeppelin:
+        perms: 777
+        owner: zeppelin
+-
+  componentName: ganglia-metadata-collector
+  config:
+    ganglia::monitor::is_deaf: false
+-
+  componentName: ganglia-monitor
+  config:
+    hadoop::common::hadoop_metrics2_overrides:
+      "*.sink.ganglia.class" : org.apache.hadoop.metrics2.sink.ganglia.GangliaSink31
+      "*.sink.ganglia.slope": "jvm.metrics.gcCount=zero,jvm.metrics.memHeapUsedM=both"
+      "*.sink.ganglia.dmax": "jvm.metrics.threadsBlocked=70,jvm.metrics.memHeapUsedM=40"
+      namenode.sink.ganglia.servers: "%{hiera('ganglia::aggregator_host')}:%{hiera('ganglia::gmond_port')}"
+      datanode.sink.ganglia.servers: "%{hiera('ganglia::aggregator_host')}:%{hiera('ganglia::gmond_port')}"
+      maptask.sink.ganglia.servers: "%{hiera('ganglia::aggregator_host')}:%{hiera('ganglia::gmond_port')}"
+      reducetask.sink.ganglia.servers: "%{hiera('ganglia::aggregator_host')}:%{hiera('ganglia::gmond_port')}"
+      nodemanager.sink.ganglia.servers: "%{hiera('ganglia::aggregator_host')}:%{hiera('ganglia::gmond_port')}"
+      resourcemanager.sink.ganglia.servers: "%{hiera('ganglia::aggregator_host')}:%{hiera('ganglia::gmond_port')}"
+    hadoop_hbase::common_config::hbase_metrics_overrides:
+      "*.period": 155
+      "*.sink.ganglia.class": org.apache.hadoop.metrics2.sink.ganglia.GangliaSink31
+      "*.sink.ganglia.slope": "jvm.metrics.gcCount=zero,jvm.metrics.memHeapUsedM=both"
+      "*.sink.ganglia.dmax": "jvm.metrics.threadsBlocked=70,jvm.metrics.memHeapUsedM=40"
+      hbase.sink.ganglia.servers: "%{hiera('ganglia::aggregator_host')}:%{hiera('ganglia::gmond_port')}"
+      "*.source.filter.class": org.apache.hadoop.metrics2.filter.GlobFilter
+      hbase.sink.ganglia.record.filter.exclude: '*Regions*'
+-
+  componentName: sqoop-client
+  config:
+    hadoop_oozie::server::use_sqoop: true
+
+-
+  componentName: kerberos-ad-joiner
+  config:
+    kerberos::site::krb5_rdns: false
